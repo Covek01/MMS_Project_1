@@ -24,4 +24,9 @@
     </EmbeddedResource>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Compressed\" />
+    <Folder Include="Resources\" />
+  </ItemGroup>
+
 </Project>

@@ -34,6 +34,8 @@
             loadPictureButton = new ToolStripButton();
             dropDownButtonOptions = new ToolStripDropDownButton();
             btnCompressAndSave = new ToolStripMenuItem();
+            loadAndDecompressButton = new ToolStripMenuItem();
+            testButton = new ToolStripButton();
             lblImgNameText = new Label();
             lblImageName = new Label();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
@@ -50,7 +52,7 @@
             // 
             // toolStrip1
             // 
-            toolStrip1.Items.AddRange(new ToolStripItem[] { loadPictureButton, dropDownButtonOptions });
+            toolStrip1.Items.AddRange(new ToolStripItem[] { loadPictureButton, dropDownButtonOptions, testButton });
             toolStrip1.Location = new Point(0, 0);
             toolStrip1.Name = "toolStrip1";
             toolStrip1.Size = new Size(1338, 25);
@@ -69,20 +71,36 @@
             // dropDownButtonOptions
             // 
             dropDownButtonOptions.DisplayStyle = ToolStripItemDisplayStyle.Text;
-            dropDownButtonOptions.DropDownItems.AddRange(new ToolStripItem[] { btnCompressAndSave });
+            dropDownButtonOptions.DropDownItems.AddRange(new ToolStripItem[] { btnCompressAndSave, loadAndDecompressButton });
             dropDownButtonOptions.Image = (Image)resources.GetObject("dropDownButtonOptions.Image");
             dropDownButtonOptions.ImageTransparentColor = Color.Magenta;
             dropDownButtonOptions.Name = "dropDownButtonOptions";
             dropDownButtonOptions.Size = new Size(62, 22);
             dropDownButtonOptions.Text = "Options";
-            dropDownButtonOptions.Click += dropDownButtonFilters_Click;
             // 
             // btnCompressAndSave
             // 
             btnCompressAndSave.Name = "btnCompressAndSave";
-            btnCompressAndSave.Size = new Size(180, 22);
+            btnCompressAndSave.Size = new Size(190, 22);
             btnCompressAndSave.Text = "Compress and save";
             btnCompressAndSave.Click += btnCompressAndSave_Click;
+            // 
+            // loadAndDecompressButton
+            // 
+            loadAndDecompressButton.Name = "loadAndDecompressButton";
+            loadAndDecompressButton.Size = new Size(190, 22);
+            loadAndDecompressButton.Text = "Load and decompress";
+            loadAndDecompressButton.Click += loadAndDecompressButton_Click;
+            // 
+            // testButton
+            // 
+            testButton.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            testButton.Image = (Image)resources.GetObject("testButton.Image");
+            testButton.ImageTransparentColor = Color.Magenta;
+            testButton.Name = "testButton";
+            testButton.Size = new Size(64, 22);
+            testButton.Text = "Compress";
+            testButton.Click += testButton_Click;
             // 
             // lblImgNameText
             // 
@@ -129,5 +147,7 @@
         private ToolStripMenuItem btnCompressAndSave;
         private Label lblImgNameText;
         private Label lblImageName;
+        private ToolStripMenuItem loadAndDecompressButton;
+        private ToolStripButton testButton;
     }
 }

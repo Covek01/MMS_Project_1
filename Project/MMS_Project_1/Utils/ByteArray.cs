@@ -20,11 +20,13 @@ namespace MMS_Project_1.Utils
         {
             byte[] bytes = BitConverter.GetBytes(value);
             Buffer.BlockCopy(bytes, 0, Data, Counter, sizeof(int));
+            Counter += 4;
         }
 
         public void WriteBytes(byte[] bytesInput, int size)
         {
             Buffer.BlockCopy(bytesInput, 0, Data, Counter, size);
+            Counter += size * sizeof(byte);
         }
 
         public void WriteByte(byte value)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,32 +11,43 @@ namespace MMS_Project_1.Converters
     {
         public static YUV RGBtoYUV(byte R, byte G, byte B)
         {
-            byte Y = (byte)(0.299 * R + 0.587 * G + 0.114 * B);
-            byte U = (byte)(0.492 * (B - Y));
-            byte V = (byte)(0.877 * (R - Y));
+            /* int Y = (int)(0.299 * R + 0.587 * G + 0.114 * B);
+             int U = (int)(-0.147 * R - 0.289 * G + 0.436 * B);
+             int V = (int)(0.615 * R - 0.515 * G - 0.100 * B);
 
-            Y = Math.Max((byte)0, Math.Min((byte)255, Y));
-            U = Math.Max((byte)0, Math.Min((byte)255, U));
-            V = Math.Max((byte)0, Math.Min((byte)255, V));
+             Y = Math.Max(0, Math.Min(255, Y));
+             U = Math.Max(0, Math.Min(255, U));
+             V = Math.Max(0, Math.Min(255, V));
+
+             return new YUV((byte)Y, (byte)U, (byte)V);*/
+
+            byte Y = (byte)(0.299 * R + 0.587 * G + 0.114 * B);
+                byte U = (byte)(128 - 0.168736 * R - 0.331264 * G + 0.5 * B);
+                byte V = (byte)(128 + 0.5 * R - 0.418688 * G - 0.081312 * B);
 
             return new YUV(Y, U, V);
         }
 
         public static RGB YUVtoRGB(byte Y, byte U, byte V)
         {
-            byte R = (byte)(Y + (byte)(1.13983 * V));
-            byte G = (byte)(Y - (byte)(0.39465 * U + 0.58060 * V));
-            byte B = (byte)(Y + (byte)(2.03211 * U));
+            /*  int R = (int)(Y + 1.13983 * V);
+              int G = (int)(Y - (0.39465 * U + 0.58060 * V));
+              int B = (int)(Y + 2.03211 * U);*/
 
-            R = Math.Max((byte)0, Math.Min((byte)255, R));
-            G = Math.Max((byte)0, Math.Min((byte)255, G));
-            B = Math.Max((byte)0, Math.Min((byte)255, B));
+            int R = (int)(Y + 1.402 * (V - 128));
+            int G = (int)(Y - 0.344136 * (U - 128) - 0.714136 * (V - 128));
+            int B = (int)(Y + 1.772 * (U - 128));
 
-            return new RGB(R, G, B);
+            R = Math.Max(0,Math.Min(255, R));
+            G = Math.Max(0, Math.Min(255, G));
+            B = Math.Max(0, Math.Min(255, B));
+
+            return new RGB((byte)R, (byte)G, (byte)B);
         }
 
         public static void ConvertRgbToYuv(Bitmap bitmap)
         {
+
             for (int y = 0; y < bitmap.Height; y++)
             {
                 for (int x = 0; x < bitmap.Width; x++)
@@ -47,6 +59,7 @@ namespace MMS_Project_1.Converters
                     byte B = pixelColor.B;
 
                     YUV yuv = RGBtoYUV(R, G, B);
+                    RGB r = YUVtoRGB(yuv.Y, yuv.U, yuv.V);
 
                     // Update pixel with YUV values
                     bitmap.SetPixel(x, y, Color.FromArgb(yuv.Y, yuv.U, yuv.V));

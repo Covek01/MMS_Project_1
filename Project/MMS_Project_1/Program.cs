@@ -16,7 +16,7 @@ namespace MMS_Project_1
 
 
             ApplicationConfiguration.Initialize();
-            Application.Run(new ImageApp(new Sampler()));
+            Application.Run(new ImageApp(new Sampler(), new HuffmanCompressor()));
         }
     }
 }

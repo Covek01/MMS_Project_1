@@ -1,21 +1,24 @@
 using MMS_Project_1.Compressor;
+using System.Windows.Forms;
+using MMS_Project_1.Utils;
+using MMS_Project_1.Converters;
 
 namespace MMS_Project_1
 {
     public partial class ImageApp : Form
     {
         private ISampler _sampler;
+        private ICompressor _compressor;
+
         private Bitmap _image;
-        public ImageApp(ISampler sampler = null)
+        public ImageApp(ISampler sampler = null, ICompressor compressor = null)
         {
             InitializeComponent();
             _sampler = sampler;
+            _compressor = compressor;
         }
 
-        private void dropDownButtonFilters_Click(object sender, EventArgs e)
-        {
 
-        }
 
         private void loadPictureButton_Click(object sender, EventArgs e)
         {
@@ -29,43 +32,45 @@ namespace MMS_Project_1
             }
         }
 
-        private void btnCompressAndSave_Click(object sender, EventArgs e)
+        private async void btnCompressAndSave_Click(object sender, EventArgs e)
         {
-            Bitmap bmp = new Bitmap(pictureBox1.Image);
-            byte[] compressedData = _sampler.Downsample(bmp);
-
-            byte[] b = { 0x00 };
-            WriteDataToFile(compressedData);
-        }
-
-        private static void WriteDataToFile(byte[] data)
-        {
-            SaveFileDialog saveFileDialog = new SaveFileDialog();
-
-            saveFileDialog.Title = "Save As";
-            saveFileDialog.Filter = "Binary Files (*.bin)|*.bin|All Files (*.*)|*.*";
-
-            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            if (pictureBox1.Image == null)
             {
-                string filePath = saveFileDialog.FileName;
-
-                try
-                {
-                    using (FileStream fileStream = new FileStream(filePath, FileMode.Create))
-                    {
-                        using (BinaryWriter binaryWriter = new BinaryWriter(fileStream))
-                        {
-                            binaryWriter.Write(data);
-                        }
-                    }
-
-                    Console.WriteLine("Data has been written to the file: " + filePath);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("An error occurred while writing data to the file: " + ex.Message);
-                }
+                return;
             }
+
+            Bitmap bmp = new Bitmap(pictureBox1.Image);
+            //Bitmap bmp = Tester.GenerateBitmap();
+            byte[] downsampledData = _sampler.Downsample(bmp);
+            byte[] compressedData = _compressor.Compress(downsampledData);
+
+            ReadingWritingUtil.WriteDataToFile(compressedData);
         }
+
+
+
+        private void loadAndDecompressButton_Click(object sender, EventArgs e)
+        {
+            byte[] input = ReadingWritingUtil.ReadBinaryFile();
+            byte[] decompressed = _compressor.Decompress(input);
+            Bitmap bmp = _sampler.Upsample(decompressed);
+            pictureBox1.Image = bmp;
+        }
+
+        private async void testButton_Click(object sender, EventArgs e)
+        {
+            byte[] input = ReadingWritingUtil.ReadBinaryFile();
+            byte[] compressedData = _compressor.Compress(input);
+            ReadingWritingUtil.WriteDataToFile(compressedData);
+            byte[] test = _compressor.Decompress(compressedData);
+            ReadingWritingUtil.WriteDataToFile(test);
+
+        }
+
+        //public async Task TestButtonAsyncFunction(object sender, EventArgs e)
+        //{
+        //    byte[] input = ReadingWritingUtil.ReadBinaryFile();
+           
+        //}
     }
 }
