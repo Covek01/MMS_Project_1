@@ -76,7 +76,13 @@ namespace MMS_Project_1.Compressor
             byte[] afterHeader = new byte[data.Length - counter];
             Array.Copy(data, counter, afterHeader, 0, afterHeader.Length);
 
+            //HuffmanTreeNode root = HuffmanTreeUtility.BuildHuffmanTree(counts);
+
+            //_codes.Clear();
+            //StoreCodes(root);
+
             Dictionary<uint, byte> invertedCodes = counts.ToDictionary(x => x.Value, x => x.Key);
+            //byte[] resultLetters = HuffmanTreeUtility.ReadDataWithTree(afterHeader, root);
             byte[] resultLetters = HuffmanTreeUtility.ReadDataWithTree(afterHeader, invertedCodes);
 
 
@@ -109,6 +115,7 @@ namespace MMS_Project_1.Compressor
             foreach (byte b in data) 
             {
                 arr = BitConverter.GetBytes(_codes[b]);
+                //arr = arr.Reverse().ToArray();
                 letter = new BitArray(arr);
 
                 counter = 0;
@@ -126,6 +133,7 @@ namespace MMS_Project_1.Compressor
             byte[] btsB = BitArrayUtil.BitArrayToByteArray(dstBitArray);
             dstBitArray.Length = pointerArray;
             byte[] bts = BitArrayUtil.BitArrayToByteArray(dstBitArray);
+            //BitArrayUtil.ReverseBitArray(dstBitArray);
 
             return dstBitArray;
         }

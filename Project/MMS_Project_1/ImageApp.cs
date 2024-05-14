@@ -2,6 +2,7 @@ using MMS_Project_1.Compressor;
 using System.Windows.Forms;
 using MMS_Project_1.Utils;
 using MMS_Project_1.Converters;
+using MMS_Project_1.FIlters;
 
 namespace MMS_Project_1
 {
@@ -43,6 +44,13 @@ namespace MMS_Project_1
             //Bitmap bmp = Tester.GenerateBitmap();
             byte[] downsampledData = _sampler.Downsample(bmp);
             byte[] compressedData = _compressor.Compress(downsampledData);
+            byte[] test = _compressor.Decompress(compressedData);
+
+            int i;
+            for (i = 0; i < downsampledData.Length; i++)
+            {
+                if (downsampledData[i] != test[i]) { break; }
+            }
 
             ReadingWritingUtil.WriteDataToFile(compressedData);
         }
@@ -67,10 +75,19 @@ namespace MMS_Project_1
 
         }
 
+        private async void sIerraDitheringToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Bitmap bmp = new Bitmap(pictureBox1.Image);
+            await SierraDithering.PerformFilter(bmp);
+            pictureBox1.Image = bmp;
+            //Task task = new Task(() => SierraDithering.PerformFilter(bmp);
+            //task.Run;
+        }
+
         //public async Task TestButtonAsyncFunction(object sender, EventArgs e)
         //{
         //    byte[] input = ReadingWritingUtil.ReadBinaryFile();
-           
+
         //}
     }
 }
