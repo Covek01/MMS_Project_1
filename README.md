@@ -1,7 +1,5 @@
 # MMS_Project_1
 
-Your text is mostly clear and grammatically correct, but it could be improved for clarity and readability. Here is a revised version:
-
 This project is created for faculty purposes. It offers several features, including the ability to compress/decompress images, load compressed images, and apply various filters to loaded images.
 
 To load an image, click the "Load image" button located on the leftmost part of the toolstrip. You will then have the option to choose a file.
