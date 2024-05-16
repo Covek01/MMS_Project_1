@@ -37,7 +37,6 @@ namespace MMS_Project_1.FIlters
                     //R channel
                     for (j = 0; j < width - 4; j++)
                     {
-                        Console.WriteLine($"i={i} j={j}");
                         offset = i * stride + j * bytesPerPixel + bytesPerPixel * 2;
                         offsetLower = offset + stride;
                         offsetBelowLower = offsetLower + stride;
@@ -105,7 +104,7 @@ namespace MMS_Project_1.FIlters
                         offsetLower = offset + stride;
                         offsetBelowLower = offsetLower + stride;
 
-                        diff = InitializeXAndGetDiff(ref beginR[offset]);
+                        diff = InitializeXAndGetDiff(ref beginB[offset]);
                         //chunk = (float)diff / 32;
 
                         //1st line

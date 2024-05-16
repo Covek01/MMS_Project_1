@@ -77,11 +77,32 @@ namespace MMS_Project_1
 
         private async void sIerraDitheringToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (pictureBox1.Image == null)
+            {
+                MessageBox.Show("IMAGE NOT SELECTED!");
+                return;
+            }
+
             Bitmap bmp = new Bitmap(pictureBox1.Image);
             await SierraDithering.PerformFilter(bmp);
             pictureBox1.Image = bmp;
             //Task task = new Task(() => SierraDithering.PerformFilter(bmp);
             //task.Run;
+        }
+
+
+        private async void meanRemovalToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (pictureBox1.Image == null)
+            {
+                MessageBox.Show("IMAGE NOT SELECTED!");
+                return;
+            }
+
+            Bitmap bmp = new Bitmap(pictureBox1.Image);
+            Bitmap newBmp = await MeanRemoval.Convolution3x3(bmp);
+            Color a = newBmp.GetPixel(1, 1);
+            pictureBox1.Image = newBmp;
         }
 
         //public async Task TestButtonAsyncFunction(object sender, EventArgs e)
