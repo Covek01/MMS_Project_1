@@ -63,7 +63,6 @@ namespace MMS_Project_1.Compressor
                         add1 = dataBegin[offset];
                         add2 = dataBegin[offsetLower];
 
-                        //averageValue = (byte)(((int)dataBegin[offset] + (int)dataBegin[offsetLower]) / 2);    //average value
                         averageValue = (byte)((add1 + add2) / 2);
                         output.WriteByte(averageValue);
                     }
@@ -81,7 +80,6 @@ namespace MMS_Project_1.Compressor
                         add1 = dataBegin[offset];
                         add2 = dataBegin[offsetLower];
 
-                        //averageValue = (byte)(((int)dataBegin[offset] + (int)dataBegin[offsetLower]) / 2);    //average value
                         averageValue = (byte)((add1 + add2) / 2);
 
                         output.WriteByte(averageValue);
@@ -109,72 +107,6 @@ namespace MMS_Project_1.Compressor
             return output.Data;
         }
 
-  //      public byte[] Downsample2(Bitmap image)
-     /*   {
-            RgbYuvConverter.ConvertRgbToYuv(image);
-            Rectangle rect = new Rectangle(0, 0, image.Width, image.Height);
-            //BitmapData imgData = image.LockBits(rect, ImageLockMode.ReadOnly, image.PixelFormat);
-
-            int bytesPerPixel = Bitmap.GetPixelFormatSize(image.PixelFormat) / 8;
-           // int stride = imgData.Stride;
-            int width = image.Width;
-            int height = image.Height;
-
-            ByteArray output = new ByteArray(2 * sizeof(int) + height * width * sizeof(byte) + 2 * height * width * sizeof(byte) / 4);
-
-            int Y = 2, U = 1, V = 0;
-
-            //writing dimensions to output
-            output.WriteInt32(height);
-            output.WriteInt32(width);
-
-            int i, j;
-            byte averageValue;
-            int add1, add2;
-
-            for (i = 0; i < height - 1; i += 2)
-            {
-                for (j = 0; j < width - 1; j += 2)
-                {
-
-                    //V channel
-                    add1 = image.GetPixel(j, i).B;
-                    add2 = image.GetPixel(j, i + 1).B;
-
-                    //averageValue = (byte)(((int)dataBegin[offset] + (int)dataBegin[offsetLower]) / 2);    //average value
-                    averageValue = (byte)((add1 + add2) / 2);
-                    output.WriteByte(averageValue);
-                }
-            }
-
-            for (i = 0; i < height - 1; i += 2)
-            {
-                for (j = 0; j < width - 1; j += 2)
-                {
-
-                    //U channel
-                    add1 = image.GetPixel(j, i).G;
-                    add2 = image.GetPixel(j, i + 1).G;
-
-                    //averageValue = (byte)(((int)dataBegin[offset] + (int)dataBegin[offsetLower]) / 2);    //average value
-                    averageValue = (byte)((add1 + add2) / 2);
-                    output.WriteByte(averageValue);
-                }
-            }
-
-            byte colorY;
-            for (i = 0; i < height - 1; i += 2)
-            {
-                for (j = 0; j < width - 1; j += 2)
-                {
-                    //Y channel
-                    colorY = image.GetPixel(j, i).R;
-                    output.WriteByte(colorY);
-                }
-            }
-
-            return output.Data;
-        }*/
 
         public Bitmap Upsample(byte[] input)
         {
@@ -287,80 +219,5 @@ namespace MMS_Project_1.Compressor
 
             return img;
         }
-
-      //  public Bitmap Upsample2(byte[] input)
-  /*      {
-            int readCounter = 0;
-
-            int height = BitConverter.ToInt32(input, readCounter);
-            readCounter += sizeof(int);
-            int width = BitConverter.ToInt32(input, readCounter);
-            readCounter += sizeof(int);
-
-            Bitmap img = new Bitmap(width, height);
-
-            int dim = width * height;
-            int dim4 = dim / 4;
-            byte[] bytesV = new byte[dim4];
-            byte[] bytesU = new byte[dim4];
-            byte[] bytesY = new byte[dim];
-
-
-            Buffer.BlockCopy(input, readCounter, bytesV, 0, dim4 * sizeof(byte));
-            readCounter += dim4 * sizeof(byte);
-            Buffer.BlockCopy(input, readCounter, bytesU, 0, dim4 * sizeof(byte));
-            readCounter += dim4 * sizeof(byte);
-
-            Buffer.BlockCopy(input, readCounter, bytesY, 0, dim * sizeof(byte));
-
-            Rectangle rect = new Rectangle(0, 0, img.Width, img.Height);
-            //BitmapData imgData = img.LockBits(rect, ImageLockMode.ReadWrite, img.PixelFormat);
-
-            int i, j;
-            int counterY = 0, counterU = 0, counterV = 0;
-            Color col;
-
-            for (i = 0; i < height - 1; i += 2)
-            {
-                for (j = 0; j < width - 1; j += 2)
-                {
-
-                    //U and V channel
-                    col = img.GetPixel(j, i);
-                    col = Color.FromArgb(col.A, col.R, bytesU[counterU], bytesV[counterV]);
-                    img.SetPixel(j, i, col);
-
-                    col = img.GetPixel(j + 1, i);
-                    col = Color.FromArgb(col.A, col.R, bytesU[counterU], bytesV[counterV]);
-                    img.SetPixel(j + 1, i, col);
-
-                    col = img.GetPixel(j, i + 1);
-                    col = Color.FromArgb(col.A, col.R, bytesU[counterU], bytesV[counterV]);
-                    img.SetPixel(j, i + 1, col);
-
-                    col = img.GetPixel(j + 1, i + 1);
-                    col = Color.FromArgb(col.A, col.R, bytesU[counterU], bytesV[counterV]);
-                    img.SetPixel(j + 1, i + 1, col);
-
-                    counterV++;
-                    counterU++;
-                }
-            }
-
-            for (i = 0; i < height - 1; i++)
-            {
-                for (j = 0; j < width - 1; j++)
-                { 
-                    //Y channel
-                    col = img.GetPixel(j, i);
-                    col = Color.FromArgb(255, bytesY[counterY++], col.G, col.B);
-                    img.SetPixel(j, i, col);
-                }
-            }
-
-            return img;
-
-        }*/
-
     }
 }

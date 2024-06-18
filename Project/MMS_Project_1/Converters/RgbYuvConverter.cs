@@ -11,16 +11,6 @@ namespace MMS_Project_1.Converters
     {
         public static YUV RGBtoYUV(byte R, byte G, byte B)
         {
-            /* int Y = (int)(0.299 * R + 0.587 * G + 0.114 * B);
-             int U = (int)(-0.147 * R - 0.289 * G + 0.436 * B);
-             int V = (int)(0.615 * R - 0.515 * G - 0.100 * B);
-
-             Y = Math.Max(0, Math.Min(255, Y));
-             U = Math.Max(0, Math.Min(255, U));
-             V = Math.Max(0, Math.Min(255, V));
-
-             return new YUV((byte)Y, (byte)U, (byte)V);*/
-
             byte Y = (byte)(0.299 * R + 0.587 * G + 0.114 * B);
                 byte U = (byte)(128 - 0.168736 * R - 0.331264 * G + 0.5 * B);
                 byte V = (byte)(128 + 0.5 * R - 0.418688 * G - 0.081312 * B);
@@ -30,10 +20,6 @@ namespace MMS_Project_1.Converters
 
         public static RGB YUVtoRGB(byte Y, byte U, byte V)
         {
-            /*  int R = (int)(Y + 1.13983 * V);
-              int G = (int)(Y - (0.39465 * U + 0.58060 * V));
-              int B = (int)(Y + 2.03211 * U);*/
-
             int R = (int)(Y + 1.402 * (V - 128));
             int G = (int)(Y - 0.344136 * (U - 128) - 0.714136 * (V - 128));
             int B = (int)(Y + 1.772 * (U - 128));

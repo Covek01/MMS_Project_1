@@ -115,7 +115,6 @@ namespace MMS_Project_1.Compressor
             foreach (byte b in data) 
             {
                 arr = BitConverter.GetBytes(_codes[b]);
-                //arr = arr.Reverse().ToArray();
                 letter = new BitArray(arr);
 
                 counter = 0;
@@ -133,7 +132,6 @@ namespace MMS_Project_1.Compressor
             byte[] btsB = BitArrayUtil.BitArrayToByteArray(dstBitArray);
             dstBitArray.Length = pointerArray;
             byte[] bts = BitArrayUtil.BitArrayToByteArray(dstBitArray);
-            //BitArrayUtil.ReverseBitArray(dstBitArray);
 
             return dstBitArray;
         }
